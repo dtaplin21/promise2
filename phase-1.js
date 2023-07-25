@@ -11,6 +11,7 @@ function runOnTreadmill() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       console.log("done running on treadmill");
+      reject("you tripped on the treadmill");
       resolve();
     }, 500);
   });
@@ -27,12 +28,20 @@ function liftWeights() {
 
 function workout() {
   // refactor this code to use Promise.all
-  stretch()
-    .then(runOnTreadmill)
-    .then(liftWeights)
+  // stretch()
+  //   .then(runOnTreadmill)
+  //   .then(liftWeights)
+  //   .then(() => console.log("done working out"))
+  //   .catch((err) => console.log(err));
+
+    const promise1 = stretch();
+    const promise2 = runOnTreadmill();
+    const promise3 = liftWeights();
+
+    promise1.finally([promise1, promise2, promise3])
     .then(() => console.log("done working out"))
-    .catch((err) => console.log(err));
-}
+    .catch((err) => console.error(err))
+  }
 
 
 /* ============================ TEST YOUR CODE ============================
